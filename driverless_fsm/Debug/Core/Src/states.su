@@ -1,0 +1,8 @@
+states.c:30:6:sys_init	4	static
+states.c:40:6:AS_OFF_Handler	4	static
+states.c:44:6:AS_Ready_Handler	4	static
+states.c:48:6:AS_Driving_Handler	4	static
+states.c:52:6:AS_Emergency_Handler	4	static
+states.c:57:6:AS_Finished_Handler	4	static
+states.c:61:6:Manual_Driving_Handler	4	static
+states.c:65:6:run	16	static
