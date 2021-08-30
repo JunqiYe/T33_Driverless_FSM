@@ -22,6 +22,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include "LCD16x2.h"
+#include "DWT_Delay.h"
 
 /* USER CODE END Includes */
 
@@ -54,7 +57,10 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int __io_putchar(int ch) {
+	ITM_SendChar(ch);
+	return 0;
+}
 /* USER CODE END 0 */
 
 /**
@@ -87,26 +93,36 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
-  /* USER CODE END 2 */
-
   LCD_Init();
   LCD_Clear();
   LCD_Set_Cursor(1, 1);
-  LCD_Write_String("  DeepBlue  ");
+  LCD_Write_String("Hello");
   LCD_Set_Cursor(2, 1);
-  LCD_Write_String("STM32 Course");
+  LCD_Write_String("World");
+  /* USER CODE END 2 */
 
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+//  int counter = 0;
   while (1)
   {
-      LCD_SR();  HAL_Delay(450);
-      LCD_SR();  HAL_Delay(450);
-      LCD_SR();  HAL_Delay(450);
-      LCD_SR();  HAL_Delay(450);
+    /* USER CODE END WHILE */
 
-      LCD_SL();  HAL_Delay(450);
-      LCD_SL();  HAL_Delay(450);
-      LCD_SL();  HAL_Delay(450);
-      LCD_SL();  HAL_Delay(450);
+    /* USER CODE BEGIN 3 */
+////	printf("looping\n");
+	//HAL_Delay(1000);
+//	//DWT_Delay_ms(1000);
+//	DWT_Delay_us(1000*1000);
+  	LCD_SR();  HAL_Delay(450);
+  	LCD_SR();  HAL_Delay(450);
+  	LCD_SR();  HAL_Delay(450);
+  	LCD_SR();  HAL_Delay(450);
+
+  	LCD_SL();  HAL_Delay(450);
+  	LCD_SL();  HAL_Delay(450);
+  	LCD_SL();  HAL_Delay(450);
+  	LCD_SL();  HAL_Delay(450);
+
   }
   /* USER CODE END 3 */
 }
@@ -168,10 +184,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
 
-  /*Configure GPIO pins : PE2 PE3 PE4 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_0|GPIO_PIN_1, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PE2 PE3 PE4 PE5
+                           PE0 PE1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |GPIO_PIN_0|GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
 }
