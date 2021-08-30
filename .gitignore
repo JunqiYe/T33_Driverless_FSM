@@ -1,10 +1,2 @@
-.metadata
-*.o
-*.bin
-*.elf
-*.map
-*.list
 
-.mxproject
-.settings
-Debug
+.metadata
