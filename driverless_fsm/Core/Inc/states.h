@@ -10,6 +10,15 @@
 
 #include <stdio.h>
 
+void sys_init();
+void AS_OFF_Handler();
+void AS_Ready_Handler();
+void AS_Driving_Handler();
+void AS_Emergency_Handler();
+void AS_Finished_Handler();
+void Manual_Driving_Handler();
+void run();
+
 typedef enum {
 	AS_Off,
 	AS_Ready,

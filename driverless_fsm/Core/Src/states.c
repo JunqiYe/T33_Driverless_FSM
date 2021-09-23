@@ -6,15 +6,21 @@
  */
 
 #include "states.h"
-#define MANUAL_MISSION 0
-#define AUTONOMOUS_MISSION 0
-#define ASMS 0
-#define BRAKE_RELEASED 0
-#define Delay_5s 0
-#define GO 0
-#define MISSION_FINISHED 0
-#define V0 0
-#define RES 0
+#include <stdbool.h>
+
+// init element in struct to gpio input
+typedef struct {
+	bool MANUAL_MISSION;
+	bool AUTONOMOUS_MISSION;
+	bool ASMS;
+	bool BRAKE_RELEASED;
+	bool Delay_5s;
+	bool GO;
+	bool MISSION_FINISHED;
+	bool V0;
+	bool RES;
+
+}externInput;
 
 typedef struct {
 	TS_state ts;
@@ -25,7 +31,8 @@ typedef struct {
 	ASSI_state assi;
 } autonomousSystem;
 
-extern autonomousSystem topLevel;
+autonomousSystem topLevel = {0};
+externInput xi = {0};
 
 void sys_init() {
 	topLevel.ts = ts_off;
@@ -71,20 +78,20 @@ void run() {
 		switch (nextState) {
 		case AS_Off:
 
-			if (MANUAL_MISSION && topLevel.ebs == ebs_unavaliable && ASMS && topLevel.ts == ts_on) {
+			if (xi.MANUAL_MISSION && topLevel.ebs == ebs_unavaliable && xi.ASMS && topLevel.ts == ts_on) {
 				nextState = Manual_Driving;
 			}
 
-			if (AUTONOMOUS_MISSION && topLevel.ebs == ebs_armed && ASMS && topLevel.ts == ts_on) {
+			if (xi.AUTONOMOUS_MISSION && topLevel.ebs == ebs_armed && xi.ASMS && topLevel.ts == ts_on) {
 				nextState = AS_Ready;
 			}
 			break;
 
 		case AS_Ready:
-			if (ASMS && BRAKE_RELEASED) {
+			if (xi.ASMS && xi.BRAKE_RELEASED) {
 				nextState = AS_Off;
 			}
-			if (Delay_5s && GO) {
+			if (xi.Delay_5s && xi.GO) {
 				nextState = AS_Driving;
 			}
 			if (topLevel.ebs == ebs_activated) {
@@ -99,7 +106,7 @@ void run() {
 			break;
 
 		case AS_Driving:
-			if (MISSION_FINISHED && V0) {
+			if (xi.MISSION_FINISHED && xi.V0) {
 				nextState = AS_Finished;
 			}
 			if (topLevel.ebs == ebs_activated) {
@@ -108,16 +115,16 @@ void run() {
 			break;
 
 		case AS_Emergency:
-			if (topLevel.ebs == ebs_activated && ASMS && BRAKE_RELEASED) {
+			if (topLevel.ebs == ebs_activated && xi.ASMS && xi.BRAKE_RELEASED) {
 				nextState = AS_Off;
 			}
 			break;
 
 		case AS_Finished:
-			if (ASMS && BRAKE_RELEASED) {
+			if (xi.ASMS && xi.BRAKE_RELEASED) {
 				nextState = AS_Off;
 			}
-			if (RES) {
+			if (xi.RES) {
 				nextState = AS_Emergency;
 			}
 			break;
@@ -125,6 +132,7 @@ void run() {
 
 		}
 		currentState = nextState;
+		HAL_Delay(100);
 	}
 
 }
