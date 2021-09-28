@@ -99,10 +99,10 @@ int main(void)
 
   LCD_Init();
   LCD_Clear();
-//  LCD_Set_Cursor(1, 1);
-//  LCD_Write_String("Hello");
-//  LCD_Set_Cursor(2, 1);
-//  LCD_Write_String("World");
+  LCD_Set_Cursor(1, 1);
+  LCD_Write_String("Hello");
+  LCD_Set_Cursor(2, 1);
+  LCD_Write_String("World");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -113,21 +113,21 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  run();
+	//  run();
 
-////	printf("looping\n");
-	//HAL_Delay(1000);
-//	//DWT_Delay_ms(1000);
-//	DWT_Delay_us(1000*1000);
-//  	LCD_SR();  HAL_Delay(450);
-//  	LCD_SR();  HAL_Delay(450);
-//  	LCD_SR();  HAL_Delay(450);
-//  	LCD_SR();  HAL_Delay(450);
-//
-//  	LCD_SL();  HAL_Delay(450);
-//  	LCD_SL();  HAL_Delay(450);
-//  	LCD_SL();  HAL_Delay(450);
-//  	LCD_SL();  HAL_Delay(450);
+//	printf("looping\n");
+	HAL_Delay(1000);
+	//DWT_Delay_ms(1000);
+	DWT_Delay_us(1000*1000);
+  	LCD_SR();  HAL_Delay(450);
+  	LCD_SR();  HAL_Delay(450);
+  	LCD_SR();  HAL_Delay(450);
+  	LCD_SR();  HAL_Delay(450);
+
+  	LCD_SL();  HAL_Delay(450);
+  	LCD_SL();  HAL_Delay(450);
+  	LCD_SL();  HAL_Delay(450);
+  	LCD_SL();  HAL_Delay(450);
 
   }
   /* USER CODE END 3 */

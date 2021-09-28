@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "states.h"
+#include "LCD16x2.h"
+#include "DWT_Delay.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,6 +99,12 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+  LCD_Init();
+  LCD_Clear();
+  LCD_Set_Cursor(1, 1);
+  LCD_Write_String("Hello");
+  LCD_Set_Cursor(2, 1);
+  LCD_Write_String("World");
 
   /* USER CODE END 2 */
 
@@ -199,12 +207,33 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PA1 */
-  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PA0 PA1 PA2 PA3
+                           PA4 PA5 PA6 PA7
+                           PA8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
+                          |GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB0 PB1 PB6 PB7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_6|GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -227,11 +256,25 @@ void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
-  for(;;)
-  {
-	printf("more loops\n");
-    osDelay(500);
-  }
+	GPIO_PinState current_pin_s = 0;
+	  for(;;)
+	  {
+		  GPIO_PinState temp_pin_s = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+		  if (current_pin_s != temp_pin_s) {
+			  current_pin_s = temp_pin_s;
+			  LCD_Clear();
+			  LCD_Set_Cursor(1, 1);
+			  if (current_pin_s == 1) {
+				  LCD_Write_String("Hello_1");
+			  } else {
+				  LCD_Write_String("World_0");
+			  }
+
+		  }
+
+		//DWT_Delay_us(1000000);
+		osDelay(500);
+	  }
   /* USER CODE END 5 */
 }
 
