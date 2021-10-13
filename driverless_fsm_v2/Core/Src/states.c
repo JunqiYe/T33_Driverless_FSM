@@ -7,20 +7,7 @@
 
 #include "states.h"
 #include <stdbool.h>
-
-// init element in struct to gpio input
-typedef struct {
-	bool MANUAL_MISSION;
-	bool AUTONOMOUS_MISSION;
-	bool ASMS;
-	bool BRAKE_RELEASED;
-	bool Delay_5s;
-	bool GO;
-	bool MISSION_FINISHED;
-	bool V0;
-	bool RES;
-
-}externInput;
+#include "LCD16x2.h"
 
 typedef struct {
 	TS_state ts;
@@ -35,6 +22,9 @@ autonomousSystem topLevel = {0};
 externInput xi = {0};
 
 void sys_init() {
+	xi.ASMS = false;
+	xi.AUTONOMOUS_MISSION = false;
+
 	topLevel.ts = ts_off;
 	topLevel.r2d = r2d_off;
 	topLevel.sa = sa_unavaliable;
@@ -66,6 +56,13 @@ void AS_Finished_Handler() {
 
 void Manual_Driving_Handler() {
 
+}
+
+void updateInput(int pin) {
+	xi.V0 = !xi.V0;
+	LCD_Clear();
+	LCD_Set_Cursor(1, 1);
+	LCD_Write_String(""+xi.V0);
 }
 
 void run() {
@@ -133,7 +130,7 @@ void run() {
 		}
 		currentState = nextState;
 		//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
-		osDelay(100);
+		osDelay(1000);
 		printf("loop\n");
 	}
 

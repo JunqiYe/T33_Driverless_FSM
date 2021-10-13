@@ -9,6 +9,7 @@
 #define SRC_STATES_H_
 
 #include <stdio.h>
+#include <stdbool.h>
 
 void sys_init();
 void AS_OFF_Handler();
@@ -18,6 +19,23 @@ void AS_Emergency_Handler();
 void AS_Finished_Handler();
 void Manual_Driving_Handler();
 void run();
+void updateInput(int pin);
+
+
+// init element in struct to gpio input
+typedef struct {
+	bool MANUAL_MISSION;		// sw0 <> PA2
+	bool AUTONOMOUS_MISSION;	// sw1 <> PA7
+	bool ASMS;					// sw2 <> PA6
+	bool BRAKE_RELEASED;		// sw3 <> PA5
+	bool Delay_5s;				// sw4 <> PA4
+	bool GO;					// sw6 <> PA3
+	bool MISSION_FINISHED;		// sw7 <> PA1
+	bool V0;					// sw8 <> PA0
+	bool RES;					// sw9 <> PA8
+
+}externInput;
+
 
 typedef enum {
 	AS_Off,

@@ -77,7 +77,6 @@ int _write(int file, char *ptr, int len) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	printf("hello world\n");
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -275,21 +274,22 @@ void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
-	GPIO_PinState current_pin_s = 0;
+	//GPIO_PinState current_pin_s = 0;
 	  for(;;)
 	  {
-		  GPIO_PinState temp_pin_s = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
-		  if (current_pin_s != temp_pin_s) {
-			  current_pin_s = temp_pin_s;
-			  LCD_Clear();
-			  LCD_Set_Cursor(1, 1);
-			  if (current_pin_s == 1) {
-				  LCD_Write_String("Hello_1");
-			  } else {
-				  LCD_Write_String("World_0");
-			  }
 
-		  }
+//		  GPIO_PinState temp_pin_s = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+//		  if (current_pin_s != temp_pin_s) {
+//			  current_pin_s = temp_pin_s;
+//			  LCD_Clear();
+//			  LCD_Set_Cursor(1, 1);
+//			  if (current_pin_s == 1) {
+//				  LCD_Write_String("Hello_1");
+//			  } else {
+//				  LCD_Write_String("World_0");
+//			  }
+//
+//		  }
 
 		//DWT_Delay_us(1000000);
 		osDelay(500);
