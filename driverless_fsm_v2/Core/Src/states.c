@@ -59,10 +59,13 @@ void Manual_Driving_Handler() {
 }
 
 void updateInput(int pin) {
-	xi.V0 = !xi.V0;
+
 	LCD_Clear();
 	LCD_Set_Cursor(1, 1);
-	LCD_Write_String(""+xi.V0);
+	LCD_Write_String("pin");
+	LCD_Set_Cursor(1, 5);
+	LCD_Write_Char('0' + pin);
+
 }
 
 void run() {

@@ -125,12 +125,12 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  //osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  //defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  osThreadDef(as_fsm, run, osPriorityNormal, 1, 128);
-  fsmHandle = osThreadCreate(osThread(as_fsm), NULL);
+  //osThreadDef(as_fsm, run, osPriorityNormal, 1, 128);
+  //fsmHandle = osThreadCreate(osThread(as_fsm), NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
