@@ -8,6 +8,7 @@
 #include "states.h"
 #include <stdbool.h>
 #include "LCD16x2.h"
+#include "cmsis_os.h"
 
 typedef struct {
 	TS_state ts;
@@ -58,13 +59,50 @@ void Manual_Driving_Handler() {
 
 }
 
+void update_EXIT(int pin, bool state) {
+	switch (pin) {
+	case 0:
+		xi.MANUAL_MISSION = state;
+		break;
+	case 1:
+		xi.AUTONOMOUS_MISSION = state;
+		break;
+	case 2:
+		xi.V0 = state;
+		break;
+	case 3:
+		xi.ASMS = state;
+		break;
+	case 4:
+		xi.BRAKE_RELEASED = state;
+		break;
+	case 5:
+		xi.GO = state;
+		break;
+	case 7:
+		xi.MISSION_FINISHED = state;
+		break;
+	case 8:
+		xi.RES = state;
+		break;
+	case 11:
+		xi.Delay_5s = state;
+		break;
+
+	}
+
+}
 void updateInput(int pin) {
 
-	LCD_Clear();
-	LCD_Set_Cursor(1, 1);
-	LCD_Write_String("pin");
-	LCD_Set_Cursor(1, 5);
-	LCD_Write_Char('0' + pin);
+//	LCD_Clear();
+//	LCD_Set_Cursor(1, 1);
+//	LCD_Write_String("pin");
+//	LCD_Set_Cursor(1, 5);
+//	LCD_Write_Char('0' + pin%10);
+//	if (pin > 10) {
+//		LCD_Set_Cursor(1, 6);
+//		LCD_Write_Char('0' + pin/10);
+//	}
 
 }
 
@@ -75,6 +113,17 @@ void run() {
 
 
 	while (1) {
+		if (xi.MANUAL_MISSION == false) {
+			LCD_Clear();
+			LCD_Set_Cursor(1, 1);
+			LCD_Write_String("manual false");
+		} else {
+			LCD_Clear();
+			LCD_Set_Cursor(1, 1);
+			LCD_Write_String("manual true");
+		}
+
+#if 0
 		switch (nextState) {
 		case AS_Off:
 
@@ -133,8 +182,8 @@ void run() {
 		}
 		currentState = nextState;
 		//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
-		osDelay(1000);
-		printf("loop\n");
+#endif
+		osDelay(100);
 	}
 
 }

@@ -24,15 +24,15 @@ void updateInput(int pin);
 
 // init element in struct to gpio input
 typedef struct {
-	bool MANUAL_MISSION;		// sw0 <> PA2
-	bool AUTONOMOUS_MISSION;	// sw1 <> PA7
-	bool ASMS;					// sw2 <> PA6
-	bool BRAKE_RELEASED;		// sw3 <> PA5
-	bool Delay_5s;				// sw4 <> PA4
-	bool GO;					// sw6 <> PA3
-	bool MISSION_FINISHED;		// sw7 <> PA1
-	bool V0;					// sw8 <> PA0
-	bool RES;					// sw9 <> PA8
+	bool MANUAL_MISSION;		// sw0 <> PA0 <> GPIO 0
+	bool AUTONOMOUS_MISSION;	// sw1 <> PA1 <> GPIO 1
+	bool ASMS;					// sw2 <> PA3 <> GPIO 3
+	bool BRAKE_RELEASED;		// sw3 <> PA4 <> GPIO 4
+	bool Delay_5s;				// sw4 <> PA11<> GPIO 11
+	bool GO;					// sw5 <> PB5 <> GPIO 5
+	bool MISSION_FINISHED;		// sw6 <> PA7 <> GPIO 7
+	bool V0;					// sw7 <> PA2 <> GPIO 2
+	bool RES;					// sw8 <> PA8 <> GPIO 8
 
 }externInput;
 
