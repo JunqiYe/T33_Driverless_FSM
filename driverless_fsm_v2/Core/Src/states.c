@@ -26,11 +26,12 @@ void sys_init() {
 	xi.ASMS = false;
 	xi.AUTONOMOUS_MISSION = false;
 
-	topLevel.ts = ts_off;
+	topLevel.ts = ts_on;
 	topLevel.r2d = r2d_off;
 	topLevel.sa = sa_unavaliable;
 	topLevel.sb = sb_unavaliable;
 	topLevel.assi = assi_OFF;
+	topLevel.ebs = ebs_armed;
 }
 
 // TODO: best to make EBS and RES interrupt based
@@ -59,7 +60,11 @@ void Manual_Driving_Handler() {
 
 }
 
+// Need to be atomic
 void update_EXIT(int pin, bool state) {
+
+	taskENTER_CRITICAL();
+
 	switch (pin) {
 	case 0:
 		xi.MANUAL_MISSION = state;
@@ -88,10 +93,11 @@ void update_EXIT(int pin, bool state) {
 	case 11:
 		xi.Delay_5s = state;
 		break;
-
 	}
 
+	taskEXIT_CRITICAL();
 }
+
 void updateInput(int pin) {
 
 //	LCD_Clear();
@@ -105,6 +111,31 @@ void updateInput(int pin) {
 //	}
 
 }
+void LCD_Print_current_state (autonomousSystemStates currentState) {
+	LCD_Clear();
+	LCD_Set_Cursor(1, 1);
+
+	switch (currentState) {
+	case AS_Off:
+		LCD_Write_String("OFF");
+		break;
+	case AS_Ready:
+		LCD_Write_String("Ready");
+		break;
+	case Manual_Driving:
+		LCD_Write_String("Manual");
+		break;
+	case AS_Driving:
+		LCD_Write_String("Driving");
+		break;
+	case AS_Emergency:
+		LCD_Write_String("Emergency");
+		break;
+	case AS_Finished:
+		LCD_Write_String("Finished");
+		break;
+	}
+}
 
 void run() {
 	sys_init();
@@ -113,18 +144,18 @@ void run() {
 
 
 	while (1) {
-		if (xi.MANUAL_MISSION == false) {
-			LCD_Clear();
-			LCD_Set_Cursor(1, 1);
-			LCD_Write_String("manual false");
-		} else {
-			LCD_Clear();
-			LCD_Set_Cursor(1, 1);
-			LCD_Write_String("manual true");
-		}
+//		if (xi.MANUAL_MISSION == false) {
+//			LCD_Clear();
+//			LCD_Set_Cursor(1, 1);
+//			LCD_Write_String("manual false");
+//		} else {
+//			LCD_Clear();
+//			LCD_Set_Cursor(1, 1);
+//			LCD_Write_String("manual true");
+//		}
+		LCD_Print_current_state(currentState);
 
-#if 0
-		switch (nextState) {
+		switch (currentState) {
 		case AS_Off:
 
 			if (xi.MANUAL_MISSION && topLevel.ebs == ebs_unavaliable && xi.ASMS && topLevel.ts == ts_on) {
@@ -137,7 +168,7 @@ void run() {
 			break;
 
 		case AS_Ready:
-			if (xi.ASMS && xi.BRAKE_RELEASED) {
+			if (!xi.ASMS && xi.BRAKE_RELEASED) {
 				nextState = AS_Off;
 			}
 			if (xi.Delay_5s && xi.GO) {
@@ -181,8 +212,6 @@ void run() {
 
 		}
 		currentState = nextState;
-		//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
-#endif
 		osDelay(100);
 	}
 

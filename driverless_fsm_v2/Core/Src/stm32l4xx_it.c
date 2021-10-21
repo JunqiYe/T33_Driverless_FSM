@@ -190,8 +190,8 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-  updateInput(0);
-  update_EXIT(0, GPIOA->IDR & GPIO_PIN_0 != 0x00u);
+  //updateInput(0);
+  update_EXIT(0, (GPIOA->IDR & GPIO_PIN_0) != 0x00u);
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
@@ -205,8 +205,8 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
-  updateInput(1);
-
+//  updateInput(1);
+  update_EXIT(1, (GPIOA->IDR & GPIO_PIN_1) != 0x00u);
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
   /* USER CODE BEGIN EXTI1_IRQn 1 */
@@ -220,7 +220,8 @@ void EXTI1_IRQHandler(void)
 void EXTI2_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI2_IRQn 0 */
-  updateInput(2);
+//  updateInput(2);
+  update_EXIT(2, (GPIOA->IDR & GPIO_PIN_2) != 0x00u);
   /* USER CODE END EXTI2_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
   /* USER CODE BEGIN EXTI2_IRQn 1 */
@@ -234,8 +235,8 @@ void EXTI2_IRQHandler(void)
 void EXTI3_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI3_IRQn 0 */
-  updateInput(3);
-
+//  updateInput(3);
+  update_EXIT(3, (GPIOA->IDR & GPIO_PIN_3) != 0x00u);
   /* USER CODE END EXTI3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
   /* USER CODE BEGIN EXTI3_IRQn 1 */
@@ -249,7 +250,8 @@ void EXTI3_IRQHandler(void)
 void EXTI4_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI4_IRQn 0 */
-	updateInput(4);
+//	updateInput(4);
+	update_EXIT(41, (GPIOA->IDR & GPIO_PIN_4) != 0x00u);
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
   /* USER CODE BEGIN EXTI4_IRQn 1 */
@@ -264,13 +266,16 @@ void EXTI9_5_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
 	if(__HAL_GPIO_EXTI_GET_FLAG(GPIO_PIN_5)){
-		updateInput(5); // toggle LD2 LED
+//		updateInput(5); // toggle LD2 LED
+		update_EXIT(5, (GPIOB->IDR & GPIO_PIN_5) != 0x00u);
 	}
 	if(__HAL_GPIO_EXTI_GET_FLAG(GPIO_PIN_7)){
-		updateInput(7); // toggle LD2 LED
+//		updateInput(7); // toggle LD2 LED
+		update_EXIT(7, (GPIOA->IDR & GPIO_PIN_7) != 0x00u);
 	}
 	if(__HAL_GPIO_EXTI_GET_FLAG(GPIO_PIN_8)){
-		updateInput(8); // toggle LD2 LED
+//		updateInput(8); // toggle LD2 LED
+		update_EXIT(8, (GPIOA->IDR & GPIO_PIN_8) != 0x00u);
 	}
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
@@ -288,7 +293,8 @@ void EXTI15_10_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
 	if(__HAL_GPIO_EXTI_GET_FLAG(GPIO_PIN_11)){
-		updateInput(11); // toggle LD2 LED
+//		updateInput(11); // toggle LD2 LED
+		update_EXIT(11, (GPIOA->IDR & GPIO_PIN_11) != 0x00u);
 	}
 
   /* USER CODE END EXTI15_10_IRQn 0 */
