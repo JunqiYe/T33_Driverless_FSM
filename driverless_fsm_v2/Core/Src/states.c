@@ -63,7 +63,7 @@ void Manual_Driving_Handler() {
 // Need to be atomic
 void update_EXIT(int pin, bool state) {
 
-	taskENTER_CRITICAL();
+	//taskENTER_CRITICAL();
 
 	switch (pin) {
 	case 0:
@@ -95,7 +95,7 @@ void update_EXIT(int pin, bool state) {
 		break;
 	}
 
-	taskEXIT_CRITICAL();
+	//taskEXIT_CRITICAL();
 }
 
 void updateInput(int pin) {
@@ -158,7 +158,7 @@ void run() {
 		switch (currentState) {
 		case AS_Off:
 
-			if (xi.MANUAL_MISSION && topLevel.ebs == ebs_unavaliable && xi.ASMS && topLevel.ts == ts_on) {
+			if (xi.MANUAL_MISSION && topLevel.ebs == ebs_unavaliable && !xi.ASMS && topLevel.ts == ts_on) {
 				nextState = Manual_Driving;
 			}
 
@@ -168,10 +168,10 @@ void run() {
 			break;
 
 		case AS_Ready:
-			if (!xi.ASMS && xi.BRAKE_RELEASED) {
+			if (!xi.ASMS && xi.BRAKE_RELEASED) { // ASMS off && Brake released
 				nextState = AS_Off;
 			}
-			if (xi.Delay_5s && xi.GO) {
+			if (xi.Delay_5s && xi.GO) { // 5s delay and go signal
 				nextState = AS_Driving;
 			}
 			if (topLevel.ebs == ebs_activated) {
@@ -201,7 +201,7 @@ void run() {
 			break;
 
 		case AS_Finished:
-			if (xi.ASMS && xi.BRAKE_RELEASED) {
+			if (!xi.ASMS && xi.BRAKE_RELEASED) {
 				nextState = AS_Off;
 			}
 			if (xi.RES) {
@@ -212,7 +212,7 @@ void run() {
 
 		}
 		currentState = nextState;
-		osDelay(100);
+		osDelay(1000);
 	}
 
 }

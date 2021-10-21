@@ -251,7 +251,7 @@ void EXTI4_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI4_IRQn 0 */
 //	updateInput(4);
-	update_EXIT(41, (GPIOA->IDR & GPIO_PIN_4) != 0x00u);
+	update_EXIT(4, (GPIOA->IDR & GPIO_PIN_4) != 0x00u);
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
   /* USER CODE BEGIN EXTI4_IRQn 1 */

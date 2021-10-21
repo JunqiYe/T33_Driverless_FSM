@@ -299,7 +299,7 @@ void StartDefaultTask(void const * argument)
 //		  }
 
 		//DWT_Delay_us(1000000);
-		osDelay(500);
+		osDelay(10000);
 	  }
   /* USER CODE END 5 */
 }
